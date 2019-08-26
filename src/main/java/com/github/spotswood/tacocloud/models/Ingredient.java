@@ -1,4 +1,4 @@
-package com.github.spotswood.tacocloud;
+package com.github.spotswood.tacocloud.models;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;

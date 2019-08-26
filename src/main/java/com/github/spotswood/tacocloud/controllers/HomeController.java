@@ -1,4 +1,4 @@
-package com.github.spotswood.tacocloud;
+package com.github.spotswood.tacocloud.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -1,5 +1,6 @@
 package com.github.spotswood.tacocloud;
 
+import com.github.spotswood.tacocloud.controllers.HomeController;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
