@@ -1,12 +1,5 @@
 package com.github.spotswood.tacocloud;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -20,6 +13,13 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -131,11 +131,11 @@ public class DesignAndOrderTacosBrowserTest {
 
     private void fillInAndSubmitOrderForm() {
         assertTrue(browser.getCurrentUrl().startsWith(orderDetailsPageUrl()));
-        fillField("input#name", "Ima Hungry");
-        fillField("input#street", "1234 Culinary Blvd.");
-        fillField("input#city", "Foodsville");
-        fillField("input#state", "CO");
-        fillField("input#zip", "81019");
+        fillField("input#deliveryName", "Ima Hungry");
+        fillField("input#deliveryStreet", "1234 Culinary Blvd.");
+        fillField("input#deliveryCity", "Foodsville");
+        fillField("input#deliveryState", "CO");
+        fillField("input#deliveryZip", "81019");
         fillField("input#ccNumber", "4111111111111111");
         fillField("input#ccExpiration", "10/19");
         fillField("input#ccCVV", "123");
@@ -151,7 +151,7 @@ public class DesignAndOrderTacosBrowserTest {
         List<String> validationErrors = getValidationErrorTexts();
         assertEquals(9, validationErrors.size());
         assertTrue(validationErrors.contains("Please correct the problems below and resubmit."));
-        assertTrue(validationErrors.contains("Name is required"));
+        assertTrue(validationErrors.contains("Delivery name is required"));
         assertTrue(validationErrors.contains("Street is required"));
         assertTrue(validationErrors.contains("City is required"));
         assertTrue(validationErrors.contains("State is required"));
@@ -171,11 +171,11 @@ public class DesignAndOrderTacosBrowserTest {
 
     private void submitInvalidOrderForm() {
         assertTrue(browser.getCurrentUrl().startsWith(orderDetailsPageUrl()));
-        fillField("input#name", "I");
-        fillField("input#street", "1");
-        fillField("input#city", "F");
-        fillField("input#state", "C");
-        fillField("input#zip", "8");
+        fillField("input#deliveryName", "I");
+        fillField("input#deliveryStreet", "1");
+        fillField("input#deliveryCity", "F");
+        fillField("input#deliveryState", "C");
+        fillField("input#deliveryZip", "8");
         fillField("input#ccNumber", "1234432112344322");
         fillField("input#ccExpiration", "14/91");
         fillField("input#ccCVV", "1234");
