@@ -3,8 +3,10 @@ package com.github.spotswood.tacocloud.controllers;
 import com.github.spotswood.tacocloud.models.Ingredient;
 import com.github.spotswood.tacocloud.models.Order;
 import com.github.spotswood.tacocloud.models.Taco;
+import com.github.spotswood.tacocloud.models.User;
 import com.github.spotswood.tacocloud.repositories.IngredientRepository;
 import com.github.spotswood.tacocloud.repositories.TacoRepository;
+import com.github.spotswood.tacocloud.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +14,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,12 +28,16 @@ public class DesignTacoController {
 
     private TacoRepository designRepo;
 
+    private UserRepository userRepo;
+
     @Autowired
     public DesignTacoController(
             IngredientRepository ingredientRepo,
-            TacoRepository designRepo) {
+            TacoRepository designRepo,
+            UserRepository userRepo) {
         this.ingredientRepo = ingredientRepo;
         this.designRepo = designRepo;
+        this.userRepo = userRepo;
     }
 
     @ModelAttribute(name = "order")
@@ -44,8 +51,12 @@ public class DesignTacoController {
     }
 
     @GetMapping
-    public String showDesignForm(Model model) {
+    public String showDesignForm(Model model, Principal principal) {
         updateModelWithIngredients(model);
+
+        String username = principal.getName();
+        User user = userRepo.findByUsername(username);
+        model.addAttribute("user", user);
 
         return "design";
     }
