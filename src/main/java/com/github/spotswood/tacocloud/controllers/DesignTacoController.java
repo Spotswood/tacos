@@ -8,13 +8,14 @@ import com.github.spotswood.tacocloud.repositories.IngredientRepository;
 import com.github.spotswood.tacocloud.repositories.TacoRepository;
 import com.github.spotswood.tacocloud.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -45,20 +46,24 @@ public class DesignTacoController {
         return new Order();
     }
 
-    @ModelAttribute(name = "taco")
-    public Taco taco() {
+    @ModelAttribute(name = "design")
+    public Taco design() {
         return new Taco();
     }
 
     @GetMapping
-    public String showDesignForm(Model model, Principal principal) {
+    public String showDesignForm(Model model) {
         updateModelWithIngredients(model);
-
-        String username = principal.getName();
-        User user = userRepo.findByUsername(username);
-        model.addAttribute("user", user);
+        updateModelWithUserInfo(model);
 
         return "design";
+    }
+
+    private void updateModelWithUserInfo(Model model) {
+        Authentication authentication =
+                SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        model.addAttribute("user", user);
     }
 
     private void updateModelWithIngredients(Model model) {
@@ -76,6 +81,7 @@ public class DesignTacoController {
     public String processDesign(@Valid Taco design, Errors errors, @ModelAttribute Order order, Model model) {
         if (errors.hasErrors()) {
             updateModelWithIngredients(model);
+            updateModelWithUserInfo(model);
             return "design";
         }
 
